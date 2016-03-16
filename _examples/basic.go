@@ -2,42 +2,42 @@ package main
 
 import (
     "fmt"
-    "../../validation"
+    "github.com/george-infinity/validation"
 )
 
 var exampleChecks = []validation.Check{
     validation.Check{
         Field: "test",
         Rules: []validation.Rule{
-            &validation.IntMin{1},
-            &validation.IntMax{100},
+            &validation.IntMin{Min:1},
+            &validation.IntMax{Max:100},
         },
     },
     validation.Check{
         Field: "test_string",
         Rules: []validation.Rule{
-            &validation.StringMin{1},
-            &validation.StringMax{16},
+            &validation.StringMin{Min:1},
+            &validation.StringMax{Max:16},
         },
     },
     validation.Check{
         Field: "test_required_string",
         Rules: []validation.Rule{
-            &validation.StringMin{1},
-            &validation.StringMax{16},
+            &validation.StringMin{Min:1},
+            &validation.StringMax{Max:16},
         },
         Required: true,
     },
     validation.Check{
         Field: "test_string_regex",
         Rules: []validation.Rule{
-            &validation.StringRegexp{`^[a-z]+$`},
+            &validation.StringRegexp{Pattern:`^[a-z]+$`},
         },
     },
     validation.Check{
         Field: "test_string_regex_array",
         Rules: []validation.Rule{
-            &validation.StringRegexp{`^[a-z]+$`},
+            &validation.StringRegexp{Pattern:`^[a-z]+$`},
         },
         Iterate: true,
     },

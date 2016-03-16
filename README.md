@@ -4,25 +4,25 @@ A simple validation library for basic data structures like JSON
 
 ## Docs
 
-[https://godoc.org/github.com/george-infinity/go-validation](https://godoc.org/github.com/george-infinity/go-validation)
+[https://godoc.org/github.com/george-infinity/validation](https://godoc.org/github.com/george-infinity/validation)
 
 ## Usage
 
-    import "github.com/george-infinity/go-validation"
+    import "github.com/george-infinity/validation"
 
     var checks = []validation.Check{
         validation.Check{
             Field: "foo",
             Rules: []validation.Rule{
-                &validation.IntMin{1},
-                &validation.IntMax{100},
+                &validation.IntMin{Min:1},
+                &validation.IntMax{Max:100},
             },
         },
         validation.Check{
             Field: "bar",
             Rules: []validation.Rule{
-                &validation.StringMin{1},
-                &validation.StringMax{16},
+                &validation.StringMin{Min:1},
+                &validation.StringMax{Max:16},
             },
         },
     }

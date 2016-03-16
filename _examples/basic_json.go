@@ -2,15 +2,15 @@ package main
 
 import (
     "fmt"
-    "../../validation"
+    "github.com/george-infinity/validation"
 )
 
 var jsonChecks = []validation.Check{
     validation.Check{
         Field: "stringField",
         Rules: []validation.Rule{
-            &validation.StringMin{1},
-            &validation.StringMax{16},
+            &validation.StringMin{Min:1},
+            &validation.StringMax{Max:16},
         },
     },
     validation.Check{
@@ -22,8 +22,8 @@ var jsonChecks = []validation.Check{
     validation.Check{
         Field: "arrayField",
         Rules: []validation.Rule{
-            &validation.StringMin{1},
-            &validation.StringMax{10},
+            &validation.StringMin{Min:1},
+            &validation.StringMax{Max:10},
         },
         Iterate: true,
     },
