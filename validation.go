@@ -84,13 +84,14 @@ func (v *validator) Run() error {
     var err error
 
     for _, check := range v.checks {
-        if check.Required {
-            if _, exists := v.data[check.Field]; !exists {
+        value, exists := v.data[check.Field]
+        if !exists {
+            if check.Required {
                 return errors.New(fmt.Sprintf(errFailedValidation, check.Field, "Required field missing"))
+            } else {
+                continue
             }
         }
-
-        value := v.data[check.Field]
 
         if check.Iterate {
             if reflect.TypeOf(value).Kind() != reflect.Slice {
