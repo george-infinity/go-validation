@@ -21,6 +21,14 @@ var exampleChecks = []validation.Check{
         },
     },
     validation.Check{
+        Field: "test_required_string",
+        Rules: []validation.Rule{
+            &validation.StringMin{1},
+            &validation.StringMax{16},
+        },
+        Required: true,
+    },
+    validation.Check{
         Field: "test_string_regex",
         Rules: []validation.Rule{
             &validation.StringRegexp{`^[a-z]+$`},
@@ -41,8 +49,9 @@ func main() {
     foo := make(map[string]interface{})
     foo["test"] = 10
     foo["test_string"] = "some test string"
+    foo["test_required_string"] = "some test string"
     foo["test_string_regex"] = "teststring"
-    foo["test_string_regex_array"] = []string{"teststring", "teststring2"}
+    foo["test_string_regex_array"] = []string{"teststring", "teststring"}
 
     validator.SetInput(foo)
 

@@ -32,11 +32,14 @@ type Rule interface {
 //Iterate is a flag that indicates if the value is a slice and we should loop
 //through the values validating them individually
 //
+//Required is a flag that indicates if the value is a required field in the input data
+//
 //Rules is a slice of Rule that describes how the value should be validated
 type Check struct {
-    Field   string
-    Iterate bool
-    Rules   []Rule
+    Field    string
+    Iterate  bool
+    Required bool
+    Rules    []Rule
 }
 
 type validator struct {
@@ -81,6 +84,12 @@ func (v *validator) Run() error {
     var err error
 
     for _, check := range v.checks {
+        if check.Required {
+            if _, exists := v.data[check.Field]; !exists {
+                return errors.New(fmt.Sprintf(errFailedValidation, check.Field, "Required field missing"))
+            }
+        }
+
         value := v.data[check.Field]
 
         if check.Iterate {
