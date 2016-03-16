@@ -10,13 +10,18 @@ import (
 var (
     //ErrStringMin will be returned if StringMin fails validation
     ErrStringMin = errors.New("Value is less than minimum")
-    //ErrStringMin will be returned if StringMax fails validation
+    //ErrStringMax will be returned if StringMax fails validation
     ErrStringMax = errors.New("Value is greater than maximum")
-    //ErrStringMin will be returned if StringRegexp fails validation
+    //ErrStringRegexp will be returned if StringRegexp fails validation
     ErrStringRegexp = errors.New("Regexp pattern does not match")
 )
 
 type (
+    //String checks that the number of characters is not less than Min and not greater than Max
+    String struct{
+        Min int
+        Max int
+    }
     //StringMin checks that the number of characters in a string is greater than Min
     StringMin struct{
         Min int
@@ -33,6 +38,26 @@ type (
         Pattern string
     }
 )
+
+//Run handles the validation of String
+func (v *String) Run(value interface{}) error {
+    if err := checkValueType(value, reflect.String); err != nil {
+        return err
+    }
+
+    sv := value.(string)
+    rc := utf8.RuneCountInString(sv)
+
+    if rc < v.Min {
+        return ErrStringMin
+    }
+
+    if rc > v.Max {
+        return ErrStringMax
+    }
+
+    return nil
+}
 
 //Run handles the validation of StringMin
 func (v *StringMin) Run(value interface{}) error {

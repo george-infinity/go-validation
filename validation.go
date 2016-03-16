@@ -67,8 +67,8 @@ func (v *validator) SetInput(input map[string]interface{}) {
     v.data = input
 }
 
-//SetJsonInput is a helper method to set the input data from a JSON string
-func (v *validator) SetJsonInput(jsonInput []byte) error {
+//SetJSONInput is a helper method to set the input data from a JSON string
+func (v *validator) SetJSONInput(jsonInput []byte) error {
     data := make(map[string]interface{})
     if err := json.Unmarshal(jsonInput, &data); err != nil {
         return err
@@ -87,10 +87,11 @@ func (v *validator) Run() error {
         value, exists := v.data[check.Field]
         if !exists {
             if check.Required {
-                return errors.New(fmt.Sprintf(errFailedValidation, check.Field, "Required field missing"))
-            } else {
-                continue
+                return fmt.Errorf(errFailedValidation, check.Field, "Required field missing")
             }
+
+            //If the field is not required and is not set, ignore it
+            continue
         }
 
         if check.Iterate {
@@ -102,14 +103,14 @@ func (v *validator) Run() error {
             for i := 0; i < s.Len(); i++ {
                 for _, rule := range check.Rules {
                     if err = rule.Run(s.Index(i).Interface()); err != nil {
-                        return errors.New(fmt.Sprintf(errSliceFailedValidation, check.Field, i, err.Error()))
+                        return fmt.Errorf(errSliceFailedValidation, check.Field, i, err.Error())
                     }
                 }
             }
         } else {
             for _, rule := range check.Rules {
                 if err = rule.Run(value); err != nil {
-                    return errors.New(fmt.Sprintf(errFailedValidation, check.Field, err.Error()))
+                    return fmt.Errorf(errFailedValidation, check.Field, err.Error())
                 }
             }
         }
@@ -121,7 +122,7 @@ func (v *validator) Run() error {
 //checkValueType checks the data type of the interface matches the expected data type
 func checkValueType(value interface{}, expectedType reflect.Kind) error {
     if reflect.TypeOf(value).Kind() != expectedType {
-        return errors.New(fmt.Sprintf(errTypeMismatch, reflect.TypeOf(value).Kind().String(), expectedType.String()))
+        return fmt.Errorf(errTypeMismatch, reflect.TypeOf(value).Kind().String(), expectedType.String())
     }
 
     return nil

@@ -9,15 +9,13 @@ var exampleChecks = []validation.Check{
     validation.Check{
         Field: "test",
         Rules: []validation.Rule{
-            &validation.IntMin{Min:1},
-            &validation.IntMax{Max:100},
+            &validation.Int{Min:1, Max:100},
         },
     },
     validation.Check{
         Field: "test_string",
         Rules: []validation.Rule{
-            &validation.StringMin{Min:1},
-            &validation.StringMax{Max:16},
+            &validation.String{Min:1, Max:16},
         },
     },
     validation.Check{

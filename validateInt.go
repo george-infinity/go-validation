@@ -13,6 +13,11 @@ var (
 )
 
 type (
+    //Int checks that the value is not less than Min and not greater than Max
+    Int struct {
+        Min int
+        Max int
+    }
     //IntMin checks that the int value is greater than Min
     IntMin struct{
         Min int
@@ -22,6 +27,25 @@ type (
         Max int
     }
 )
+
+//Run handles tha validation of Int
+func (v *Int) Run(value interface{}) error {
+    if err := checkValueType(value, reflect.Int); err != nil {
+        return err
+    }
+
+    iv := value.(int)
+
+    if iv < v.Min {
+        return ErrIntMin
+    }
+
+    if iv > v.Max {
+        return ErrIntMax
+    }
+
+    return nil
+}
 
 //Run handles the validation of IntMin
 func (v *IntMin) Run(value interface{}) error {

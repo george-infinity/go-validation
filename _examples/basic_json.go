@@ -34,7 +34,7 @@ var jsonData = `{"stringField":"test string","regexField":"testregex","arrayFiel
 func main() {
     validator := validation.GetNewValidator()
 
-    if err := validator.SetJsonInput([]byte(jsonData)); err != nil {
+    if err := validator.SetJSONInput([]byte(jsonData)); err != nil {
         fmt.Println(err)
         return
     }
